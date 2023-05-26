@@ -1,8 +1,10 @@
+---
 name: conchayoro-pipeline
 on:
   push:
-    branches: [main]
-  workflow_dispatch:
+    branches:
+      - main
+  workflow_dispatch: null
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -12,7 +14,7 @@ env:
   PROJECT_NAME: ${{ vars.PROJECT_NAME }}
   MODULE_NAME: ${{ vars.MODULE_NAME }}
   TAG: latest
-  STACK_NAME: "64bit Amazon Linux 2 v3.5.7 running Docker"
+  STACK_NAME: 64bit Amazon Linux 2 v3.5.7 running Docker
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -20,12 +22,15 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
-          cache: 'npm'
+          node-version: "16"
+          cache: npm
       - run: docker build -t $PROJECT_NAME/$MODULE_NAME $MODULE_NAME/.
-      - run: docker tag $PROJECT_NAME/$MODULE_NAME:$TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$PROJECT_NAME/$MODULE_NAME:$TAG
-      - run: aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
-      - run: docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$PROJECT_NAME/$MODULE_NAME:$TAG
+      - run: docker tag $PROJECT_NAME/$MODULE_NAME:$TAG
+          $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$PROJECT_NAME/$MODULE_NAME:$TAG
+      - run: aws ecr get-login-password --region $AWS_REGION | docker login --username
+          AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+      - run: docker push
+          $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$PROJECT_NAME/$MODULE_NAME:$TAG
       - uses: actions/upload-artifact@v3
         with:
           name: ebconfig
@@ -39,7 +44,7 @@ jobs:
         - uses: actions/download-artifact@v3
           with:
             name: ebconfig
-            path:
+            path: null
         - run: |
             sed -i='' "s/<AWS_ACCOUNT_ID>/$AWS_ACCOUNT_ID/" Dockerrun.aws.json
             sed -i='' "s/<PROJECT_NAME>/$PROJECT_NAME/" Dockerrun.aws.json
@@ -47,7 +52,7 @@ jobs:
             sed -i='' "s/<TAG>/$TAG/" Dockerrun.aws.json
         - uses: actions/setup-python@v2
           with:
-            python-version: '3.10'
+            python-version: "3.10"
         - run: |
             python -m pip install --upgrade pip
             pip install awsebcli
