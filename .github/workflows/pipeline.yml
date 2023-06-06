@@ -23,7 +23,7 @@ jobs:
   create-environment:
     runs-on: ubuntu-latest
     steps:
-      - run: aws elasticbeanstalk create-application --application-name ${{ vars.PROJECT_NAME }} && aws elasticbeanstalk create-environment --application-name ${{ vars.PROJECT_NAME }} --environment-name ${{ vars.PROJECT_NAME }} --solution-stack-name "64bit Amazon Linux 2 v5.4.4 running Docker 19.03.6-ce" && echo "${{ vars.PROJECT_NAME }} created" && exit 0; echo "${{ vars.PROJECT_NAME }} already created" && exit 0
+      - run: aws elasticbeanstalk create-application --application-name ${{ vars.PROJECT_NAME }} && aws elasticbeanstalk create-environment --application-name ${{ vars.PROJECT_NAME }} --environment-name ${{ vars.MODULE_NAME }} --solution-stack-name "64bit Amazon Linux 2 v5.4.4 running Docker 19.03.6-ce" && echo "${{ vars.PROJECT_NAME }} created" && exit 0; echo "${{ vars.PROJECT_NAME }} already created" && exit 0
   build:
     runs-on: ubuntu-latest
     steps:
