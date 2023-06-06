@@ -71,5 +71,6 @@ jobs:
           2
           Y
           2
+          N
           EOF
           eb deploy --verbose
