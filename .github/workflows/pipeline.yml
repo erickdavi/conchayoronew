@@ -69,5 +69,6 @@ jobs:
           1
           1
           2
+          Y
           EOF
           eb deploy --verbose
