@@ -68,5 +68,6 @@ jobs:
           eb init <<EOF
           1
           1
+          2
           EOF
           eb deploy --verbose
