@@ -16,6 +16,11 @@ env:
   TAG: latest
   STACK_NAME: 64bit Amazon Linux 2 v3.5.7 running Docker
 jobs:
+  create-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+        if aws ecr create-repository --repository-name ${{ vars.PROJECT_NAME }} --image-scanning-configuration scanOnPush=true --region ${{ vars.AWS_REGION }};then echo "Success"; else echo "The registry already exists"
   build:
     runs-on: ubuntu-latest
     steps:
