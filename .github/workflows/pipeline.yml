@@ -19,15 +19,7 @@ jobs:
   create-repo:
     runs-on: ubuntu-latest
     steps:
-      - run: |
-        if aws ecr create-repository --repository-name ${{ vars.PROJECT_NAME }} --image-scanning-configuration scanOnPush=true --region ${{ vars.AWS_REGION }} && echo "Success" || echo "The registry already exists"
-        then
-          echo "${{ vars.PROJECT_NAME }} registry created"
-          exit 0
-        else
-          echo "${{ vars.PROJECT_NAME }} already created"
-          exit 0
-        fi
+      - run: aws ecr create-repository --repository-name ${{ vars.PROJECT_NAME }} --image-scanning-configuration scanOnPush=true --region ${{ vars.AWS_REGION }} && echo "Success" && echo 0; echo "${{ vars.PROJECT_NAME }} already exist"
   build:
     runs-on: ubuntu-latest
     steps:
